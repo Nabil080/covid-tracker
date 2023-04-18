@@ -1,41 +1,22 @@
-<?php
-            $json_data = file_get_contents("covid_2023.json");
-            $covid_data = json_decode($json_data, true);
-?>
+<?php include('include/header.php') ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
-    < script src = "https://code.jquery.com/jquery-3.6.0.min.js" >
-    </script>
-    </script>
-
-    <title>Document</title>
-</head>
-
-<body>
+<body class="">
 
     <center>
         <?php
         $array_pays= [];
         foreach($covid_data['PaysData'] as $pays){
             if(!in_array($pays['Pays'],$array_pays)){ $array_pays[] = $pays['Pays']?>
-        <button class="pays" data-id="<?=$pays['Pays']?>"><a
+        <button class="rounded-lg px-1 bg-gray-300 hover:bg-gray-100 border" data-id="<?=$pays['Pays']?>"><a
                 href="?pays=<?=$pays['Pays']?>"><?=$pays['Pays']?></a></button>
         <?php }} ?>
     </center>
 
+    <button class="bg-blue-300 rounded-lg px-2 py-1 absolute right-8 top-80"><a href="stats_cool.php">Stats cool
+            -></a></button>
 
-    <?=$_GET['pays']?>
+    <?php if(isset($_GET['pays'])){ echo $_GET['pays'] ;}?>
     <canvas id="myChart" style="width:100%;max-width:700px">></canvas>
-
-
     <table>
 
         <tr>
@@ -52,7 +33,7 @@
         <?php
             $i = 0 ;
             foreach($covid_data['PaysData'] as $covid){
-                if(isset($_GET['pays']) && $i <= 100){ ;
+                if(isset($_GET['pays']) && $i <= 10000){ ;
                     if(in_array($_GET['pays'],$covid)){$i++
                 ?>
         <tr>
@@ -66,7 +47,7 @@
             <td><?=$covid['TauxInfection']?></td>
         </tr>
 
-        <?php }}elseif($i <= 100){ $i++; ?>
+        <?php }}elseif($i <= 10000){ $i++; ?>
 
         <tr>
             <td><?=$covid['Date']?></td>
@@ -160,8 +141,6 @@
     </script>
 
     <?php } ?>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 
 </html>
