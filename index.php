@@ -22,12 +22,9 @@
         <tr>
             <th>Date</th>
             <th>Pays</th>
-            <th>Hospitalisés</th>
+            <th>Infections</th>
             <th>Décès</th>
-            <th>Guérisons</th>
             <th>Taux de décès</th>
-            <th>Taux de guérison</th>
-            <th>Taux d'infection</th>
         </tr>
 
         <?php
@@ -36,28 +33,22 @@
                 if(isset($_GET['pays']) && $i <= 10000){ ;
                     if(in_array($_GET['pays'],$covid)){$i++
                 ?>
-        <tr>
+        <tr class="text-center">
             <td><?=$covid['Date']?></td>
             <td><?=$covid['Pays']?></td>
             <td><?=$covid['Infection']?></td>
             <td><?=$covid['Deces']?></td>
-            <td><?=$covid['Guerisons']?></td>
             <td><?=$covid['TauxDeces']?></td>
-            <td><?=$covid['TauxGuerison']?></td>
-            <td><?=$covid['TauxInfection']?></td>
         </tr>
 
         <?php }}elseif($i <= 10000){ $i++; ?>
 
-        <tr>
+        <tr class="space-x-4">
             <td><?=$covid['Date']?></td>
             <td><?=$covid['Pays']?></td>
             <td><?=$covid['Infection']?></td>
             <td><?=$covid['Deces']?></td>
-            <td><?=$covid['Guerisons']?></td>
             <td><?=$covid['TauxDeces']?></td>
-            <td><?=$covid['TauxGuerison']?></td>
-            <td><?=$covid['TauxInfection']?></td>
         </tr>
         <?php }
         }
