@@ -19,3 +19,6 @@ if (isset($_GET['action']) and $_GET['action'] != '') {
 } else {
     dashboard();
 }
+
+
+?>

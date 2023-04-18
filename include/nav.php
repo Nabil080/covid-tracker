@@ -1,12 +1,16 @@
-<div class="dropdown w-[265.667px]">
+<div class="dropdown w-[265.667px] h-[56px] relative top-0 left-0">
+</div>
+
+<div class="dropdown w-[265.667px] fixed top-0 left-0">
     <button onclick="myFunction()" class="dropbtn w-full">Pays</button>
-    <div id="myDropdown" class="dropdown-content">
+    <div id="myDropdown" class="dropdown-content max-h-screen overflow-scroll">
         <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-        <?php $array_pays = [];
-        foreach ($covid_data['PaysData'] as $pays) {
+        <a href="<?=substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], "&"))?>">Tous les pays</a>
+        <?php $array_pays = [];$pays_data = getPaysData();
+        foreach ($pays_data as $pays) {
             if (!in_array($pays['Pays'], $array_pays)) {
                 $array_pays[] = $pays['Pays'] ?>
-                <a href="?action=table&pays=<?= $pays['Pays'] ?>"><?= $pays['Pays'] ?></a>
+                <a href="<?=$_SERVER['REQUEST_URI']?>&pays=<?= $pays['Pays'] ?>"><?= $pays['Pays'] ?></a>
         <?php }
         } ?>
 
@@ -49,7 +53,6 @@
 
     /* The container <div> - needed to position the dropdown content */
     .dropdown {
-        position: relative;
         display: inline-block;
     }
 

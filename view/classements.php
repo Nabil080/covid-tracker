@@ -1,144 +1,103 @@
-<?php include('include/header.php'); ?>
+<?php include('include/header.php');
+$pays_data = getPaysData();
+// var_dump($pays_data);
+?>
 
 <body class="bg-blue-100">
 
-    <center>
-        <?php
-        $array_pays = [];
-        foreach ($covid_data['PaysData'] as $pays) {
-            if (!in_array($pays['Pays'], $array_pays)) {
-                $array_pays[] = $pays['Pays'] ?>
-                <button class="rounded-lg px-1 bg-gray-300 hover:bg-gray-100 border" data-id="<?= $pays['Pays'] ?>"><a href="?pays=<?= $pays['Pays'] ?>"><?= $pays['Pays'] ?></a></button>
-        <?php }
-        } ?>
-    </center>
+    <center class="text-red-600 text-xl"> Classement des pays avec le plus de décès suite au covid </center>
 
-    <button class="bg-blue-300 rounded-lg px-2 py-1 absolute right-8 top-80"><a href="stats_cool.php">Stats cool
-            -></a></button>
+    <button class="bg-blue-300 rounded-lg px-2 py-1 absolute right-8 top-80"><a href="index.php">
+            <- Stats pas cool</a></button>
 
-    <?php if (isset($_GET['pays'])) {
-        echo $_GET['pays'];
-    } ?>
-    <canvas id="myChart" style="width:100%;max-width:700px">></canvas>
-    <table>
+    <canvas class="absolute right-80 top-80 overflow-x-auto max-w-[50vw]" id="myChart">></canvas>
 
-        <tr>
-            <th>Date</th>
-            <th>Pays</th>
-            <th>Infections</th>
-            <th>Décès</th>
-            <th>Taux de décès</th>
-        </tr>
 
-        <?php
-        $i = 0;
-        foreach ($covid_data['PaysData'] as $covid) {
-            if (isset($_GET['pays']) && $i <= 10000) {;
-                if (in_array($_GET['pays'], $covid)) {
-                    $i++
-        ?>
-                    <tr class="text-center">
-                        <td><?= $covid['Date'] ?></td>
-                        <td><?= $covid['Pays'] ?></td>
-                        <td><?= $covid['Infection'] ?></td>
-                        <td><?= $covid['Deces'] ?></td>
-                        <td><?= $covid['TauxDeces'] ?></td>
-                    </tr>
+    <?php
+    // $array_pays= [];
+    //         foreach($pays_data as $pays){
+    //             if(!in_array($pays['Pays'],$array_pays)){
+    //                 $array_pays[] = $pays['Pays'];
+    //             }
+    //         }
+    // // var_dump($array_pays);
 
-                <?php }
-            } elseif ($i <= 10000) {
-                $i++; ?>
-
-                <tr class="space-x-4">
-                    <td><?= $covid['Date'] ?></td>
-                    <td><?= $covid['Pays'] ?></td>
-                    <td><?= $covid['Infection'] ?></td>
-                    <td><?= $covid['Deces'] ?></td>
-                    <td><?= $covid['TauxDeces'] ?></td>
-                </tr>
-        <?php }
+    // foreach($pays_data as $covid){
+    //     foreach($array_pays as $pays){
+    //         if($covid['Pays'] == 'France'){
+    //         var_dump ($covid['Deces']);
+    //         }
+    //     }
+    // }
+    $death = [];
+    // var_dump($death);
+    foreach ($pays_data as $covid) {
+        if ($covid['Date'] == '2023-03-09') {
+            $death[] = [
+                'Deces' => $covid['Deces'],
+                'Pays' => $covid['Pays']
+            ];
         }
+    }
+    rsort($death);
+    // var_dump($death);
+    $i = 1;
+    foreach ($death as $key) { ?>
+        <div class="flex">
+            <h1 class=" text-red-600"> Top <?= $i ?></h1>
+            <div class="mt-4 ml-4"> Nombre de morts en <?= $key['Pays'] ?> : <?= $key['Deces'] ?></div>
+        </div>
+    <?php $i++;
+    }
 
+    // var_dump($death);
 
-        ?>
+    ?>
 
-
-    </table>
-
-
-    <?php if (!isset($_GET['pays'])) { ?>
-        <script>
-            const xyValues = [
-                <?php foreach ($covid_data['GlobalData'] as $global) { ?> {
-                        x: '<?= substr($global['Date'], 0, strpos($global['Date'], "T")) ?>',
-                        y: <?= $global['Deces'] ?>
-                    },
-                <?php } ?>
-            ];
-
-            new Chart("myChart", {
-                type: "line",
-                data: {
-                    label: 'salut',
-                    datasets: [{
-                        pointRadius: 4,
-                        pointBackgroundColor: "rgba(50,100,200,1)",
-                        backgroundColor: "rgba(25, 25, 25, 0.5)",
-                        data: xyValues
-                    }]
-                },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            type: 'time',
-                            time: {
-                                parser: 'YYYY-MM-DD', // format of the date string
-                                tooltipFormat: 'll' // format of the tooltip on hover
-                            }
-                        }]
-                    }
-                }
-            });
-        </script>
-    <?php } else { ?>
-
-        <script>
-            const xyValues = [
-                <?php foreach ($covid_data['PaysData'] as $covid) {
-                    if (in_array($_GET['pays'], $covid)) { ?> {
-                            x: '<?= substr($covid['Date'], 0, strpos($covid['Date'], "T")) ?>',
-                            y: <?= $covid['Deces'] ?>
-                        },
-                <?php }
-                } ?>
-            ];
-
-            new Chart("myChart", {
-                type: "line",
-                data: {
-                    label: 'salut',
-                    datasets: [{
-                        pointRadius: 4,
-                        pointBackgroundColor: "rgba(50,100,200,1)",
-                        backgroundColor: "rgba(25, 25, 25, 0.5)",
-                        data: xyValues
-                    }]
-                },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            type: 'time',
-                            time: {
-                                parser: 'YYYY-MM-DD', // format of the date string
-                                tooltipFormat: 'll' // format of the tooltip on hover
-                            }
-                        }]
-                    }
-                }
-            });
-        </script>
-
-    <?php } ?>
+<?php include('include/backtoindex.php');?>
 </body>
+
+<script>
+    const xValues = [
+        // <?php foreach ($death as $key) {
+                echo "'" . $key['Pays'] .
+                    "', ";
+            } ?>
+        'Albanie',
+        'France',
+        'Japon',
+        'Chine',
+        'Albanio',
+        'Albania',
+    ];
+
+    const yValues = [
+        // <?php foreach ($death as $key) {
+                echo $key['Deces'] .
+                    ", ";
+            } ?>
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+    ];
+
+    new Chart("myChart", {
+        type: "bar",
+
+        data: {
+            labels: xValues,
+            datasets: [{
+                // barPercentage: 0.5,
+                // barThickness: 6,
+                // maxBarThickness: 8,
+                // minBarLength: 2,
+                data: yValues
+            }]
+        }
+    });
+</script>
 
 </html>

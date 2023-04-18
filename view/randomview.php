@@ -2,16 +2,7 @@
 
 <body class="bg-blue-100">
 
-    <div class="flex justify-center flex-wrap gap-1">
-        <?php
-        $array_pays = [];
-        foreach ($covid_data['PaysData'] as $pays) {
-            if (!in_array($pays['Pays'], $array_pays)) {
-                $array_pays[] = $pays['Pays'] ?>
-                <button class="rounded-lg px-1 bg-gray-300 hover:bg-gray-100 border" data-id="<?= $pays['Pays'] ?>"><a href="?pays=<?= $pays['Pays'] ?>"><?= $pays['Pays'] ?></a></button>
-        <?php }
-        } ?>
-    </div>
+    <?php include('include/nav.php'); ?>
 
     <button class="bg-blue-300 rounded-lg px-2 py-1 absolute right-8 top-80"><a href="stats_cool.php">Stats cool
             -></a></button>
@@ -31,8 +22,9 @@
         </tr>
 
         <?php
+        $pays_data = getPaysData();
         $i = 0;
-        foreach ($covid_data['PaysData'] as $covid) {
+        foreach ($pays_data as $covid) {
             if (isset($_GET['pays']) && $i <= 10000) {;
                 if (in_array($_GET['pays'], $covid)) {
                     $i++
@@ -66,11 +58,12 @@
     </table>
 
 
-    <?php if (!isset($_GET['pays'])) { ?>
+    <?php if (!isset($_GET['pays'])) {
+        $global_data = getGlobalData(); ?>
         <script>
             const xyValues = [
-                <?php foreach ($covid_data['GlobalData'] as $global) { ?> {
-                        x: '<?= substr($global['Date'], 0, strpos($global['Date'], "T")) ?>',
+                <?php foreach ($global_data as $global) { ?> {
+                        x: '<?= $global['Date'] ?>',
                         y: <?= $global['Deces'] ?>
                     },
                 <?php } ?>
@@ -104,9 +97,9 @@
 
         <script>
             const xyValues = [
-                <?php foreach ($covid_data['PaysData'] as $covid) {
+                <?php foreach ($pays_data as $covid) {
                     if (in_array($_GET['pays'], $covid)) { ?> {
-                            x: '<?= substr($covid['Date'], 0, strpos($covid['Date'], "T")) ?>',
+                            x: '<?= $covid['Date'] ?>',
                             y: <?= $covid['Deces'] ?>
                         },
                 <?php }
@@ -139,6 +132,7 @@
         </script>
 
     <?php } ?>
+    <?php include('include/backtoindex.php'); ?>
 </body>
 
 </html>
