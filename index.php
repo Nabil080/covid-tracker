@@ -12,8 +12,7 @@
         <?php }} ?>
     </center>
 
-    <button class="bg-blue-300 rounded-lg px-2 py-1 absolute right-8 top-80"><a href="stats_cool.php">Stats cool
-            -></a></button>
+    <button class="bg-blue-300 rounded-lg px-2 py-1 absolute right-8 top-80"><a href="stats_cool.php">Stats cool -></a></button>
 
     <?php if(isset($_GET['pays'])){ echo $_GET['pays'] ;}?>
     <canvas id="myChart" style="width:100%;max-width:700px">></canvas>
