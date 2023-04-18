@@ -1,10 +1,6 @@
-<?php
-            $json_data = file_get_contents("covid_2023.json");
-            $covid_data = json_decode($json_data, true);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
+
 
 <head>
     <meta charset="UTF-8">
