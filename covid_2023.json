@@ -7,6 +7,7 @@
         {
             "Date": "2023-03-09T00:00:00",
             "Infection": 676544800,
+            "Pays": "Monde",
             "Deces": 6881737,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -16,6 +17,7 @@
         {
             "Date": "2023-03-08T00:00:00",
             "Infection": 676367475,
+            "Pays": "Monde",
             "Deces": 6880418,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -25,6 +27,7 @@
         {
             "Date": "2023-03-07T00:00:00",
             "Infection": 676188029,
+            "Pays": "Monde",
             "Deces": 6878973,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -34,6 +37,7 @@
         {
             "Date": "2023-03-06T00:00:00",
             "Infection": 676057592,
+            "Pays": "Monde",
             "Deces": 6878050,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -43,6 +47,7 @@
         {
             "Date": "2023-03-05T00:00:00",
             "Infection": 675999552,
+            "Pays": "Monde",
             "Deces": 6877684,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -52,6 +57,7 @@
         {
             "Date": "2023-03-04T00:00:00",
             "Infection": 675943426,
+            "Pays": "Monde",
             "Deces": 6877536,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -61,6 +67,7 @@
         {
             "Date": "2023-03-03T00:00:00",
             "Infection": 675889231,
+            "Pays": "Monde",
             "Deces": 6877260,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -70,6 +77,7 @@
         {
             "Date": "2023-03-02T00:00:00",
             "Infection": 675696496,
+            "Pays": "Monde",
             "Deces": 6875467,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -79,6 +87,7 @@
         {
             "Date": "2023-03-01T00:00:00",
             "Infection": 675506110,
+            "Pays": "Monde",
             "Deces": 6873913,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -88,6 +97,7 @@
         {
             "Date": "2023-02-28T00:00:00",
             "Infection": 675292814,
+            "Pays": "Monde",
             "Deces": 6872204,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -97,6 +107,7 @@
         {
             "Date": "2023-02-27T00:00:00",
             "Infection": 675143090,
+            "Pays": "Monde",
             "Deces": 6871330,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -106,6 +117,7 @@
         {
             "Date": "2023-02-26T00:00:00",
             "Infection": 675017309,
+            "Pays": "Monde",
             "Deces": 6870794,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -115,6 +127,7 @@
         {
             "Date": "2023-02-25T00:00:00",
             "Infection": 674951902,
+            "Pays": "Monde",
             "Deces": 6870551,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -124,6 +137,7 @@
         {
             "Date": "2023-02-24T00:00:00",
             "Infection": 674906344,
+            "Pays": "Monde",
             "Deces": 6870333,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -133,6 +147,7 @@
         {
             "Date": "2023-02-23T00:00:00",
             "Infection": 674761104,
+            "Pays": "Monde",
             "Deces": 6868780,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -142,6 +157,7 @@
         {
             "Date": "2023-02-22T00:00:00",
             "Infection": 674536080,
+            "Pays": "Monde",
             "Deces": 6866846,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -151,6 +167,7 @@
         {
             "Date": "2023-02-21T00:00:00",
             "Infection": 674291417,
+            "Pays": "Monde",
             "Deces": 6865043,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -160,6 +177,7 @@
         {
             "Date": "2023-02-20T00:00:00",
             "Infection": 674112557,
+            "Pays": "Monde",
             "Deces": 6864250,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -169,6 +187,7 @@
         {
             "Date": "2023-02-19T00:00:00",
             "Infection": 674026637,
+            "Pays": "Monde",
             "Deces": 6863681,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -178,6 +197,7 @@
         {
             "Date": "2023-02-18T00:00:00",
             "Infection": 673940914,
+            "Pays": "Monde",
             "Deces": 6863219,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -187,6 +207,7 @@
         {
             "Date": "2023-02-17T00:00:00",
             "Infection": 673850090,
+            "Pays": "Monde",
             "Deces": 6862846,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -196,6 +217,7 @@
         {
             "Date": "2023-02-16T00:00:00",
             "Infection": 673655129,
+            "Pays": "Monde",
             "Deces": 6860380,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -205,6 +227,7 @@
         {
             "Date": "2023-02-15T00:00:00",
             "Infection": 673442630,
+            "Pays": "Monde",
             "Deces": 6858287,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -214,6 +237,7 @@
         {
             "Date": "2023-02-14T00:00:00",
             "Infection": 673204553,
+            "Pays": "Monde",
             "Deces": 6856771,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -223,6 +247,7 @@
         {
             "Date": "2023-02-13T00:00:00",
             "Infection": 673012341,
+            "Pays": "Monde",
             "Deces": 6855583,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -232,6 +257,7 @@
         {
             "Date": "2023-02-12T00:00:00",
             "Infection": 672875957,
+            "Pays": "Monde",
             "Deces": 6854789,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -241,6 +267,7 @@
         {
             "Date": "2023-02-11T00:00:00",
             "Infection": 672799189,
+            "Pays": "Monde",
             "Deces": 6854418,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -250,6 +277,7 @@
         {
             "Date": "2023-02-10T00:00:00",
             "Infection": 672666955,
+            "Pays": "Monde",
             "Deces": 6853792,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -259,6 +287,7 @@
         {
             "Date": "2023-02-09T00:00:00",
             "Infection": 672526051,
+            "Pays": "Monde",
             "Deces": 6851623,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -268,6 +297,7 @@
         {
             "Date": "2023-02-08T00:00:00",
             "Infection": 672269936,
+            "Pays": "Monde",
             "Deces": 6849929,
             "Guerisons": 0,
             "TauxDeces": 1.02,
@@ -277,6 +307,7 @@
         {
             "Date": "2023-02-07T00:00:00",
             "Infection": 672041454,
+            "Pays": "Monde",
             "Deces": 6848033,
             "Guerisons": 0,
             "TauxDeces": 1.02,

@@ -5,15 +5,18 @@
 <?php include('include/nav.php');
 
 $pays_data = isset($_GET['pays']) ? getOnePaysData($_GET['pays']) : getPaysData();
+$pays_data = isset($_GET['paysArray']) ? getMultiplePaysData($_GET['paysArray']) : $pays_data;
+
+// $pays_array = ['France','Maroc','Brésil','Inde',];
+// $pays_data = getMultiplePaysData($pays_array);
 
 ?>
 
-<div class="w-fit absolute top-4 left-[45%] text-xl">Tables de données par pays</div>
 
 
 
 <table class="w-[80%] mx-[10%] text-center border-2 border-black">
-
+    <div class="w-fit mx-auto text-xl">Tables de données par pays</div>
         <tr class="mb-4 divide-gray-500 divide-x-2 bg-blue-300  ">
             <th>Date</th>
             <th>Pays</th>

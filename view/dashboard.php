@@ -1,4 +1,10 @@
-<?php include('include/header.php'); ?>
+<?php include('include/header.php'); 
+
+$data = getChosenData('PaysData',true,true,false,true,false);
+var_dump($data)
+
+
+?>
 
 <body class="bg-blue-100">
     <center class="text-3xl">Bienvenue sur mon covid tracker !</center>
