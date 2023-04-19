@@ -261,4 +261,10 @@ function multipleFilterData(
     return $filtered_data;
 }
 
+function removeFilterFromUrl($get_to_remove, $filter_to_remove){
+    $get_to_remove = $get_to_remove.urlencode($filter_to_remove);
+    $new_url = str_replace($get_to_remove, "",$_SERVER['REQUEST_URI']);
+
+    return $new_url;
+}
 
