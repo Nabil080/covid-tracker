@@ -198,10 +198,10 @@ $sorted_data = sort($data);
 
 }
 
-function oneFilterData(array $data, string $filter){
-
+function oneFilterData(array $data, $pays_filter){
+var_dump($pays_filter);
 $filtered_data = [];
-$filter_array = explode(",", $filter);
+if(is_string($pays_filter)){$filter_array = explode(",", $pays_filter);}else{$filter_array = $pays_filter;}
 $filter_array = array_map('trim', $filter_array);
 
 foreach($data as $key){
@@ -213,6 +213,20 @@ foreach($data as $key){
 }
 
 return $filtered_data;
+}
+
+function dateIntervalFilterData(array $data, string $date_filter){
+
+    $filter_array = explode(",", $date_filter);
+    $filter_array = array_map('trim', $filter_array);
+
+    foreach($data as $key){
+        if($key['Date'] >= $filter_array[0] && $key['Date'] <= $filter_array[1]){
+            $filtered_data[] = $key;
+        }
+    }
+
+    return $filtered_data;
 }
 
 function multipleFilterData(
@@ -234,18 +248,17 @@ function multipleFilterData(
     !empty($taux_deces) ? $data_filter[] = " \$key['Taux_deces'] $taux_deces " : "";
 
     $filter_string = implode(" && ", $data_filter);
-    var_dump($filter_string);
+    // var_dump($filter_string);
 
 
 
     foreach($data as $key){
-        // Evaluate the filter string for the current key
         $include_key = eval("return $filter_string;");
-        // If the filter evaluates to true, add the key to the filtered data
-        if($include_key){
+        if($include_key OR $filter_string == ""){
             $filtered_data[] = $key;
         }
     }
     return $filtered_data;
 }
+
 

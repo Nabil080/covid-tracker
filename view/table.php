@@ -4,11 +4,27 @@
 
 <?php include('include/nav.php');
 
-$pays_data = isset($_GET['pays']) ? getOnePaysData($_GET['pays']) : getPaysData();
-$pays_data = isset($_GET['paysArray']) ? getMultiplePaysData($_GET['paysArray']) : $pays_data;
+$pays_data = getPaysData();
 
-// $pays_array = ['France','Maroc','Brésil','Inde',];
-// $pays_data = getMultiplePaysData($pays_array);
+isset($_GET['date']) ? $date_filter = $_GET['date'] : $date_filter = "";
+isset($_GET['pays']) ? $pays_filter = $_GET['pays'] : $pays_filter = "";
+isset($_GET['infection']) ? $infection_filter = $_GET['infection'] : $infection_filter = "";
+isset($_GET['deces']) ? $deces_filter = $_GET['deces'] : $deces_filter = "";
+isset($_GET['taux_deces']) ? $taux_deces_filter = $_GET['taux_deces'] : $taux_deces_filter = "";
+isset($_GET['multi_pays']) ? $multi_pays_filter = $_GET['multi_pays'] : $multi_pays_filter = "";
+isset($_GET['multi_date']) ? $multi_date_filter = $_GET['multi_date'] : $multi_date_filter = "";
+
+if(!empty($multi_pays_filter)){
+    $pays_data = oneFilterData($pays_data,$multi_pays_filter);
+    $pays_filter = "";
+}
+
+if(!empty($multi_date_filter)){
+    $pays_data = dateIntervalFilterData($pays_data,'2023-03-05,2023-03-09');
+    $date_filter = "";
+}
+
+$pays_data = multipleFilterData($pays_data,$date_filter,$pays_filter,$infection_filter,$deces_filter,$taux_deces_filter);
 
 ?>
 

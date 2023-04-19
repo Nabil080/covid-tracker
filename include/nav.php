@@ -6,13 +6,23 @@
     <div id="myDropdown" class="dropdown-content max-h-screen overflow-scroll">
         <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
         <a href="<?=substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], "&"))?>">Tous les pays</a>
-        <?php $array_pays = [];$pays_data = getPaysData();
+        <?php $array_pays = [];$pays_data = getPaysData();$pays_active = [];
         foreach ($pays_data as $pays) {
             if (!in_array($pays['Pays'], $array_pays)) {
-                $array_pays[] = $pays['Pays'] ?>
-                <a href="<?=$_SERVER['REQUEST_URI']?>&pays=<?= $pays['Pays'] ?>"><?= $pays['Pays'] ?></a>
-        <?php }
-        } ?>
+                $array_pays[] = $pays['Pays'];
+                $get_pays = isset($_GET['multi_pays']) ? $_GET['multi_pays'] : [];
+                if(!in_array($pays['Pays'],$get_pays) OR empty($get_pays)){
+                    if(isset($_GET['multi_pays'])){?>
+                        <a href="<?=$_SERVER['REQUEST_URI']?>&multi_pays[]=<?= $pays['Pays'] ?>"><?= $pays['Pays'] ?></a>
+                    <?php }else{?>
+                        <a href="<?=$_SERVER['REQUEST_URI']?>&multi_pays[]=<?= $pays['Pays'] ?>"><?= $pays['Pays'] ?></a>
+                    <?php }
+                }else{
+                    $pays_active[] = $pays['Pays'];
+                }
+            }
+        }
+        var_dump($pays_active);?>
 
     </div>
 </div>
