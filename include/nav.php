@@ -1,7 +1,6 @@
 <?php
 $pays_data = getPaysData();
 $array_pays = [];
-// $active_pays = [];
 $active_pays = isset($_GET['multi_pays']) ? $_GET['multi_pays'] : [];
 // definit array pays
 foreach($pays_data as $pays){
@@ -9,40 +8,51 @@ foreach($pays_data as $pays){
         $array_pays[] = $pays['Pays'];
     }
 }
+// var_dump($array_pays);
+$date_array = getdateInterval('2023-02-07','2023-03-09');
 
-$startDate = '2023-02-07';
-$endDate = '2023-03-09';
+// TODO : date de départ solo = > $date
+// TODO : date de fin solo = < $date
+// TODO : date de départ et de fin = > $date & < $date
 
-// Create DateTime objects for the start and end dates
-$startDateTime = new DateTime($startDate);
-$endDateTime = new DateTime($endDate);
-
-// Calculate the number of days between the start and end dates
-$interval = $startDateTime->diff($endDateTime);
-$numberOfDays = $interval->days;
-
-// Loop through each day in the date range
-$currentDateTime = $startDateTime;
-for ($i = 0; $i <= $numberOfDays; $i++) {
-  // Format the current date as a string and do something with it
-  $currentDate = $currentDateTime->format('Y-m-d');
- ?>  <a href="<?=$_SERVER['REQUEST_URI']?>&date==='<?=$currentDate?>'"><?=$currentDate?></a>
-
-  <?php // Increment the current date by 1 day
-  $currentDateTime->modify('+1 day');
+if(isset($_POST['startDate'])){
+    $_SESSION['startDate'] = $_POST['startDate'];
+}elseif(!isset($_SESSION['startDate'])){
+    $_SESSION['startDate'] = "2023-02-07";
 }
 
+if(isset($_POST['endDate'])){
+    $_SESSION['endDate'] = $_POST['endDate'];
+}elseif(!isset($_SESSION['endDate'])){
+    $_SESSION['endDate'] = "2023-03-09";
+}
 
+if(isset($_POST['infection'])){
+    $_SESSION['infection'] = $_POST['infection'];
+}elseif(!isset($_SESSION['infection'])){
+    $_SESSION['infection'] = "0";
+}
+
+if(isset($_POST['deces'])){
+    $_SESSION['deces'] = $_POST['deces'];
+}elseif(!isset($_SESSION['deces'])){
+    $_SESSION['deces'] = "0";
+}
+
+if(isset($_POST['taux_deces'])){
+    $_SESSION['taux_deces'] = $_POST['taux_deces'];
+}elseif(!isset($_SESSION['taux_deces'])){
+    $_SESSION['taux_deces'] = "0";
+}
 
 ?>
+<div class="w-full h-[100px]"></div>
+<nav class="bg-blue-200 border-b-2 border-black align-center fixed top-0 flex justify-center w-full">
 
-<div class="dropdown w-[265.667px] h-[56px] relative top-0 left-0">
-</div>
-
-<div class="dropdown w-[265.667px] fixed top-0 left-0">
-    <button onclick="myFunction()" class="dropbtn w-full">Pays</button>
-    <div id="myDropdown" class="dropdown-content max-h-screen overflow-scroll">
-        <div class="<?php if(empty($active_pays)){ echo 'hidden';}else{ echo 'flex';} ?> flex-wrap p-4">
+<div class="relative dropdown w-[265.667px]">
+    <button onclick="paysDropdown()" class="dropbtn w-full">Pays</button>
+    <div id="paysDropdown" class="dropdown-content max-h-screen overflow-scroll">
+        <div class="<?php if(empty($active_pays)){ echo 'hidden';}else{ echo 'flex';} ?> w-[265.667px] flex-wrap p-4">
             Filtres actifs (cliquez pour supprimer):
             <?php foreach($active_pays as $active){
                 $new_url = removeFilterFromUrl("&multi_pays[]=",$active) ?>
@@ -50,96 +60,83 @@ for ($i = 0; $i <= $numberOfDays; $i++) {
             <?php } ?>
         </div>
         <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-        <a class="pays" href="<?=substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], "&"))?>">Tous les pays</a>
+        <a class="a" href="<?=substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], "&"))?>">Tous les pays</a>
         <?php
-        foreach($pays_data as $pays) {
-            if(!in_array($pays['Pays'],$active_pays)){?>
-                    <a class="pays" href="<?=$_SERVER['REQUEST_URI']?>&multi_pays[]=<?= $pays['Pays'] ?>"><?= $pays['Pays'] ?></a>
+        foreach($array_pays as $pays) {
+            if(!in_array($pays,$active_pays)){?>
+                    <a class="a" href="<?=$_SERVER['REQUEST_URI']?>&multi_pays[]=<?= $pays ?>"><?= $pays ?></a>
     <?php   }
         } ?>
     </div>
+    <button class="absolute top-[75px] ml-4 px-4 py-1 bg-red-200 hover:bg-red-300"><a href="unset.php">Réinitialiser les filtres</a></button>
 </div>
 
-<style>
-    /* Dropdown Button */
-    .dropbtn {
-        background-color: #04AA6D;
-        color: white;
-        padding: 16px;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-    }
+<div class="grow flex">
+    <form action="" method="post" class="mx-auto my-auto">
+        Infections :
+        <input type="number" placeholder="0" value="<?=$_SESSION['infection']?>" class="pl-2 w-24" name="infection">
+        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400"  name="submit" value="mini">mini</button>
+        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400"  name="submit" value="maxi">maxi</button>
+    </form>
 
-    /* Dropdown button on hover & focus */
-    .dropbtn:hover,
-    .dropbtn:focus {
-        background-color: #3e8e41;
-    }
+    <form action="" method="post" class="mx-auto my-auto">
+        Décès :
+        <input type="number" placeholder="0" value="<?=$_SESSION['deces']?>" class="pl-2 w-24" name="deces">
+        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400"  name="submit" value="mini">mini</button>
+        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400"  name="submit" value="maxi">maxi</button>
+    </form>
 
-    /* The search field */
-    #myInput {
-        box-sizing: border-box;
-        background-image: url('searchicon.png');
-        background-position: 14px 12px;
-        background-repeat: no-repeat;
-        font-size: 16px;
-        padding: 14px 20px 12px 45px;
-        border: none;
-        border-bottom: 1px solid #ddd;
-    }
+    <form action="" method="post" class="mx-auto my-auto">
+        Taux de Décès :
+        <input type="number"  step='0.01' placeholder="0.00" value="<?=$_SESSION['taux_deces']?>" class="pl-2 w-24" name="taux_deces">
+        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400"  name="submit" value="mini">mini</button>
+        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400"  name="submit" value="maxi">maxi</button>
+    </form>
 
-    /* The search field when it gets focus/clicked on */
-    #myInput:focus {
-        outline: 3px solid #ddd;
-    }
+    <form action="" method="post" class="mx-auto my-auto ">
+        <!-- <input type="text" class="" name="action" value="<?=$new_url?>"> -->
+        <label class="align-center h-fit my-auto">Date de début</label>
+        <input type="date" name="startDate" value='<?=$_SESSION['startDate']?>' min='' max='2023-03-09'>
+        <label class="align-center h-fit my-auto">Date de fin</label>
+        <input type="date" name="endDate" value='<?=$_SESSION['endDate']?>' min='2023-02-07' max='2023-03-09'>
+        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400" >submit</button>
+    </form>
 
-    /* The container <div> - needed to position the dropdown content */
-    .dropdown {
-        display: inline-block;
-    }
 
-    /* Dropdown Content (Hidden by Default) */
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #f6f6f6;
-        min-width: 230px;
-        border: 1px solid #ddd;
-        z-index: 1;
-    }
 
-    /* Links inside the dropdown */
-    .dropdown-content .pays {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-    }
+</div>
 
-    /* Change color of dropdown links on hover */
-    .dropdown-content .pays:hover {
-        background-color: #f1f1f1
-    }
+<div class="dropdown">
+    <button onclick="dateDropdown()" class="dropbtn">Dates exactes</button>
+    <div id="dateDropdown" class="dropdown-content max-h-screen overflow-scroll">
+        <div class="flex flex-wrap p-4 justify-start">
+            <?php
+            foreach($date_array as $date){
+            ?>
+                <a class="a w-full" href="<?=$_SERVER['REQUEST_URI']?>&date==='<?=$date?>'"><?=$date?></a>
+            <?php } ?>
+        </div>
+    </div>
+</div>
 
-    /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-    .show {
-        display: block;
-    }
-</style>
+</nav>
 
 <script>
     /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
-    function myFunction() {
-        document.getElementById("myDropdown").classList.toggle("show");
+    function paysDropdown() {
+        document.getElementById("paysDropdown").classList.toggle("show");
+    }
+
+    function dateDropdown() {
+        document.getElementById("dateDropdown").classList.toggle("show");
     }
 
     function filterFunction() {
         var input, filter, ul, li, a, i;
         input = document.getElementById("myInput");
         filter = input.value.toUpperCase();
-        div = document.getElementById("myDropdown");
+        div = document.getElementById("paysDropdown");
         a = div.getElementsByTagName("a");
         for (i = 0; i < a.length; i++) {
             txtValue = a[i].textContent || a[i].innerText;

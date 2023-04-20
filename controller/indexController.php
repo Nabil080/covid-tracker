@@ -199,7 +199,6 @@ $sorted_data = sort($data);
 }
 
 function oneFilterData(array $data, $pays_filter){
-var_dump($pays_filter);
 $filtered_data = [];
 if(is_string($pays_filter)){$filter_array = explode(",", $pays_filter);}else{$filter_array = $pays_filter;}
 $filter_array = array_map('trim', $filter_array);
@@ -245,7 +244,7 @@ function multipleFilterData(
     !empty($pays) ? $data_filter[] = " \$key['Pays'] $pays " : "";
     !empty($infection) ? $data_filter[] = " \$key['Infection'] $infection " : "";
     !empty($deces) ? $data_filter[] = " \$key['Deces'] $deces " : "";
-    !empty($taux_deces) ? $data_filter[] = " \$key['Taux_deces'] $taux_deces " : "";
+    !empty($taux_deces) ? $data_filter[] = " \$key['TauxDeces'] $taux_deces " : "";
 
     $filter_string = implode(" && ", $data_filter);
     // var_dump($filter_string);
@@ -266,5 +265,31 @@ function removeFilterFromUrl($get_to_remove, $filter_to_remove){
     $new_url = str_replace($get_to_remove, "",$_SERVER['REQUEST_URI']);
 
     return $new_url;
+}
+
+function getDateInterval($startDate, $endDate){
+
+    // Create DateTime objects for the start and end dates
+    $startDateTime = new DateTime($startDate);
+    $endDateTime = new DateTime($endDate);
+
+    // Calculate the number of days between the start and end dates
+    $interval = $startDateTime->diff($endDateTime);
+    $numberOfDays = $interval->days;
+
+    // Loop through each day in the date range
+    $currentDateTime = $startDateTime;
+
+    $date_interval_array = [];
+
+    for ($i = 0; $i <= $numberOfDays; $i++) {
+        // Format the current date as a string and do something with it
+        $currentDate = $currentDateTime->format('Y-m-d');
+        $date_interval_array[] = $currentDate;
+        $currentDateTime->modify('+1 day');
+    }
+
+    return $date_interval_array;
+
 }
 
