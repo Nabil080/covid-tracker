@@ -1,19 +1,13 @@
 <?php
 $pays_data = getPaysData();
-$array_pays = [];
+
 $active_pays = isset($_GET['multi_pays']) ? $_GET['multi_pays'] : [];
 // definit array pays
-foreach($pays_data as $pays){
-    if(!in_array($pays['Pays'], $array_pays)){
-        $array_pays[] = $pays['Pays'];
-    }
-}
-// var_dump($array_pays);
-$date_array = getdateInterval('2023-02-07','2023-03-09');
 
-// TODO : date de départ solo = > $date
-// TODO : date de fin solo = < $date
-// TODO : date de départ et de fin = > $date & < $date
+
+$array_pays = getUniquePaysList($pays_data);
+
+$date_array = getdateInterval($pays_data,'Date');
 
 if(isset($_POST['startDate'])){
     $_SESSION['startDate'] = $_POST['startDate'];
@@ -50,7 +44,7 @@ if(isset($_POST['taux_deces'])){
 <nav class="bg-blue-200 border-b-2 border-black align-center fixed top-0 flex justify-center w-full">
 
 <div class="relative dropdown w-[265.667px]">
-    <button onclick="paysDropdown()" class="dropbtn w-full">Pays</button>
+    <button onclick="paysDropdown()" class="dropbtn w-full">Pays <i class="fa fa-chevron-down"></i></button>
     <div id="paysDropdown" class="dropdown-content max-h-screen overflow-scroll">
         <div class="<?php if(empty($active_pays)){ echo 'hidden';}else{ echo 'flex';} ?> w-[265.667px] flex-wrap p-4">
             Filtres actifs (cliquez pour supprimer):
@@ -75,22 +69,50 @@ if(isset($_POST['taux_deces'])){
     <form action="" method="post" class="mx-auto my-auto">
         Infections :
         <input type="number" placeholder="0" value="<?=$_SESSION['infection']?>" class="pl-2 w-24" name="infection">
-        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400"  name="submit" value="mini">mini</button>
-        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400"  name="submit" value="maxi">maxi</button>
+        <button type="submit" class="px-2 border hover:bg-green-500 <?php if(isset($_SESSION['infection_filter'])){ echo str_contains($_SESSION['infection_filter'],'>') ? "bg-green-500 border-black" : "bg-green-400 border-white" ;}else{echo "bg-green-400 border-white";} ?>"  name="submit" value="mini">mini</button>
+        <button type="submit" class="px-2 border hover:bg-green-500 <?php if(isset($_SESSION['infection_filter'])){ echo str_contains($_SESSION['infection_filter'],'<') ? "bg-green-500 border-black" : "bg-green-400 border-white" ;}else{echo "bg-green-400 border-white";} ?>"  name="submit" value="maxi">maxi</button>
     </form>
+
+<!-- // TODO traitement ajax -->
+
+    <!-- <form action="" method="post" class="mx-auto my-auto">
+        Infections :
+        <input type="number" placeholder="0" value="<?=$_SESSION['infection']?>" class="pl-2 w-24" name="infection">
+        <button type="submit" class="px-2 border hover:bg-green-500 <?php if(isset($_SESSION['infection_filter'])){ echo str_contains($_SESSION['infection_filter'],'>') ? "bg-green-500 border-black" : "bg-green-400 border-white" ;}else{echo "bg-green-400 border-white";} ?>"  name="submit" value="mini">mini</button>
+        <button type="submit" class="px-2 border hover:bg-green-500 <?php if(isset($_SESSION['infection_filter'])){ echo str_contains($_SESSION['infection_filter'],'<') ? "bg-green-500 border-black" : "bg-green-400 border-white" ;}else{echo "bg-green-400 border-white";} ?>"  name="submit" value="maxi">maxi</button>
+    </form>
+
+<script>
+const url = 'https://api.github.com/users/shrutikapoor08/repos';
+
+fetch(url)
+    .then(response => response.json())
+    .then(repos => {
+        const reposList = repos.map(repo => repo.name);
+        console.log(reposList);
+    })
+    
+.catch(err => console.log(err))
+
+
+</script> -->
+
+
+
+
 
     <form action="" method="post" class="mx-auto my-auto">
         Décès :
         <input type="number" placeholder="0" value="<?=$_SESSION['deces']?>" class="pl-2 w-24" name="deces">
-        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400"  name="submit" value="mini">mini</button>
-        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400"  name="submit" value="maxi">maxi</button>
+        <button type="submit" class="px-2 border hover:bg-green-500 <?php if(isset($_SESSION['deces_filter'])){ echo str_contains($_SESSION['deces_filter'],'>') ? "bg-green-500 border-black" : "bg-green-400 border-white" ;}else{echo "bg-green-400 border-white";} ?>"  name="submit" value="mini">mini</button>
+        <button type="submit" class="px-2 border hover:bg-green-500 <?php if(isset($_SESSION['deces_filter'])){ echo str_contains($_SESSION['deces_filter'],'<') ? "bg-green-500 border-black" : "bg-green-400 border-white" ;}else{echo "bg-green-400 border-white";} ?>"  name="submit" value="maxi">maxi</button>
     </form>
 
     <form action="" method="post" class="mx-auto my-auto">
         Taux de Décès :
         <input type="number"  step='0.01' placeholder="0.00" value="<?=$_SESSION['taux_deces']?>" class="pl-2 w-24" name="taux_deces">
-        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400"  name="submit" value="mini">mini</button>
-        <button type="submit" class="px-2 border border-white hover:bg-green-500 bg-green-400"  name="submit" value="maxi">maxi</button>
+        <button type="submit" class="px-2 border hover:bg-green-500 <?php if(isset($_SESSION['taux_deces_filter'])){ echo str_contains($_SESSION['taux_deces_filter'],'>') ? "bg-green-500 border-black" : "bg-green-400 border-white" ;}else{echo "bg-green-400 border-white";} ?>"  name="submit" value="mini">mini</button>
+        <button type="submit" class="px-2 border hover:bg-green-500 <?php if(isset($_SESSION['taux_deces_filter'])){ echo str_contains($_SESSION['taux_deces_filter'],'<') ? "bg-green-500 border-black" : "bg-green-400 border-white" ;}else{echo "bg-green-400 border-white";} ?>"  name="submit" value="maxi">maxi</button>
     </form>
 
     <form action="" method="post" class="mx-auto my-auto ">
@@ -107,7 +129,7 @@ if(isset($_POST['taux_deces'])){
 </div>
 
 <div class="dropdown">
-    <button onclick="dateDropdown()" class="dropbtn">Dates exactes</button>
+    <button onclick="dateDropdown()" class="dropbtn">Dates exactes <i class="fa fa-chevron-down"></i></button>
     <div id="dateDropdown" class="dropdown-content max-h-screen overflow-scroll">
         <div class="flex flex-wrap p-4 justify-start">
             <?php

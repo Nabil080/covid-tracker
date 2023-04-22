@@ -3,8 +3,7 @@ include('include/header.php');
 include('include/nav.php');
 
 $pays_data = getPaysData();
-
-isset($_GET['date']) ? $date_filter = $_GET['date'] : $date_filter = "";
+// var_dump($_SESSION);
 isset($_GET['pays']) ? $pays_filter = $_GET['pays'] : $pays_filter = "";
 
 isset($_GET['deces']) ? $deces_filter = $_GET['deces'] : $deces_filter = "";
@@ -59,7 +58,6 @@ if(isset($_POST['taux_deces'])){
 
 $taux_deces_filter = $_SESSION['taux_deces_filter'];
 
-// var_dump($_SESSION);
 
 if(!empty($multi_pays_filter)){
     $pays_data = oneFilterData($pays_data,$multi_pays_filter);
@@ -71,24 +69,69 @@ if(isset($_SESSION['startDate']) && isset($_SESSION['endDate'])){
     $pays_data = dateIntervalFilterData($pays_data,$date_interval);
     $date_filter = "";
 }
-$pays_data = multipleFilterData($pays_data,$date_filter,$pays_filter,$infection_filter,$deces_filter,$taux_deces_filter);
+isset($_GET['date']) ? $date_filter = $_GET['date'] : $date_filter = "";
 
-// var_dump($_POST);
+
+$pays_data = multipleFilterData($pays_data,$date_filter,$pays_filter,$infection_filter,$deces_filter,$taux_deces_filter);
+$pays_data = sortData($pays_data);
+
+
 ?>
 
 <body class=bg-blue-100>
 
 <table class="w-[80%] mx-[10%] text-center border-2 border-black">
     <div class="w-fit mx-auto text-xl">Tables de données par pays</div>
-        <tr class="mb-4 divide-gray-500 divide-x-2 bg-blue-300  ">
-            <th>Date</th>
-            <th>Pays</th>
-            <th>Infections</th>
-            <th>Décès</th>
-            <th>Taux de décès (%)</th>
+        <tr class="mb-4 divide-gray-500 divide-x-2 bg-blue-300 ">
+            <?php if($_SESSION['sort']['name'] == 'Date'){
+                if($_SESSION['sort']['order'] == 'desc'){?>
+                    <form action ="" method="post"><th><button type="submit" name="sort" value="Date,asc">Date <i class="fa-solid fa-sort-down"></i></button></th></form>
+                <?php }else{ ?>
+                    <form action ="" method="post"><th><button type="submit" name="sort" value="Date,desc">Date <i class="fa-solid fa-sort-up"></i></button></th></form>
+                <?php }
+            }else{ ?>
+                <form action ="" method="post"><th><button type="submit" name="sort" value="Date,desc">Date <i class="fa-solid fa-sort"></i></button></th></form>
+            <?php } ?>
+            <?php if($_SESSION['sort']['name'] == 'Pays'){
+                if($_SESSION['sort']['order'] == 'desc'){?>
+                    <form action ="" method="post"><th><button type="submit" name="sort" value="Pays,asc">Pays <i class="fa-solid fa-sort-down"></i></button></th></form>
+                <?php }else{ ?>
+                    <form action ="" method="post"><th><button type="submit" name="sort" value="Pays,desc">Pays <i class="fa-solid fa-sort-up"></i></button></th></form>
+                <?php }
+            }else{ ?>
+                <form action ="" method="post"><th><button type="submit" name="sort" value="Pays,desc">Pays <i class="fa-solid fa-sort"></i></button></th></form>
+            <?php } ?>
+            <?php if($_SESSION['sort']['name'] == 'Infection'){
+                if($_SESSION['sort']['order'] == 'desc'){?>
+                    <form action ="" method="post"><th><button type="submit" name="sort" value="Infection,asc">Infections <i class="fa-solid fa-sort-down"></i></button></th></form>
+                <?php }else{ ?>
+                    <form action ="" method="post"><th><button type="submit" name="sort" value="Infection,desc">Infections <i class="fa-solid fa-sort-up"></i></button></th></form>
+                <?php }
+            }else{ ?>
+                <form action ="" method="post"><th><button type="submit" name="sort" value="Infection,desc">Infections <i class="fa-solid fa-sort"></i></button></th></form>
+            <?php } ?>
+            <?php if($_SESSION['sort']['name'] == 'Deces'){
+                if($_SESSION['sort']['order'] == 'desc'){?>
+                    <form action ="" method="post"><th><button type="submit" name="sort" value="Deces,asc">Décès <i class="fa-solid fa-sort-down"></i></button></th></form>
+                <?php }else{ ?>
+                    <form action ="" method="post"><th><button type="submit" name="sort" value="Deces,desc">Décès <i class="fa-solid fa-sort-up"></i></button></th></form>
+                <?php }
+            }else{ ?>
+                <form action ="" method="post"><th><button type="submit" name="sort" value="Deces,desc">Décès <i class="fa-solid fa-sort"></i></button></th></form>
+            <?php } ?>
+            <?php if($_SESSION['sort']['name'] == 'TauxDeces'){
+                if($_SESSION['sort']['order'] == 'desc'){?>
+                    <form action ="" method="post"><th><button type="submit" name="sort" value="TauxDeces,asc">Taux de Décès (%) <i class="fa-solid fa-sort-down"></i></button></th></form>
+                <?php }else{ ?>
+                    <form action ="" method="post"><th><button type="submit" name="sort" value="TauxDeces,desc">Taux de Décès (%) <i class="fa-solid fa-sort-up"></i></button></th></form>
+                <?php }
+            }else{ ?>
+                <form action ="" method="post"><th><button type="submit" name="sort" value="TauxDeces,desc">Taux de Décès (%) <i class="fa-solid fa-sort"></i></button></th></form>
+            <?php } ?>
         </tr>
 
-        <?php foreach ($pays_data as $covid) { ?>
+        <?php if($pays_data){
+            foreach ($pays_data as $covid) { ?>
             <tr class="space-x-4 divide-gray-500 divide-x-2 <?= isset($color) ? ' ' : 'bg-blue-200'?>">
                         <td><?= $covid['Date'] ?></td>
                         <td><?= $covid['Pays'] ?></td>
@@ -96,7 +139,10 @@ $pays_data = multipleFilterData($pays_data,$date_filter,$pays_filter,$infection_
                         <td><?= number_format($covid['Deces'], 0, ',', '.') ?></td>
                         <td><?= $covid['TauxDeces'] ?></td>
             </tr>
-        <?php isset($color) ? $color = null : $color = 'bg-blue-200' ;} ?>
+        <?php isset($color) ? $color = null : $color = 'bg-blue-200' ;}
+        }else{
+            echo'Pas de données correspondant aux filtres.';
+        }?>
 </table>
 
 <?php include('include/backtoindex.php');?>

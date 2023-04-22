@@ -55,10 +55,22 @@ function getGlobalData()
             'TauxDeces' => $key['TauxDeces'],
         ];
     }
-// TODO sort by variable
-// TODO select les valeurs
+
     return $data;
 }
+
+function getUniquePaysList($data){
+    $array_pays = [];
+    foreach($data as $pays){
+        if(!in_array($pays['Pays'], $array_pays)){
+            $array_pays[] = $pays['Pays'];
+        }
+    }
+    sort($array_pays);
+
+    return $array_pays;
+}
+
 
 function getOnePaysData(string $pays)
 {
@@ -110,7 +122,7 @@ function getMultiplePaysData(array $pays_array){
 
 }
 
-function getPaysTotalDeces(){
+function getPaysTotalDeces(int $number){
     $pays_data = getPaysData();
 
     $pays_death = [];
@@ -124,11 +136,19 @@ function getPaysTotalDeces(){
     }
     rsort($pays_death);
 
-    return $pays_death;
+    $data = [];
+    $i = 0;
+    foreach ($pays_death as $key){
+        if($i <= $number){
+            $data[] = $key;
+            $i++;
+        }
+    }
+    return $data;
 }
 
-function getTotalDeces(){
-    $pays_death = getPaysTotalDeces();
+function getTotalDeces(int $number){
+    $pays_death = getPaysTotalDeces($number);
     $death = [];
 
     foreach($pays_death as $key){
@@ -140,11 +160,62 @@ function getTotalDeces(){
     return $death_json;
 }
 
-function getTotalPays(){
-    $pays_death = getPaysTotalDeces();
+function getTotalPays(int $number){
+    $pays_death = getPaysTotalDeces($number);
     $pays = [];
 
     foreach($pays_death as $key){
+        $pays[] = $key['Pays'];
+    }
+
+    $pays_json = json_encode($pays);
+
+    return $pays_json;
+}
+
+function getPaysTotalInfection(int $number){
+    $pays_data = getPaysData();
+
+    $pays_infection = [];
+    foreach ($pays_data as $covid) {
+        if ($covid['Date'] == '2023-03-09') {
+            $pays_infection[] = [
+                'Infection' => $covid['Infection'],
+                'Pays' => $covid['Pays']
+            ];
+        }
+    }
+    rsort($pays_infection);
+
+    $data = [];
+    $i = 0;
+    foreach ($pays_infection as $key){
+        if($i <= $number){
+            $data[] = $key;
+            $i++;
+        }
+    }
+    return $data;
+}
+
+function getTotalInfection(int $number){
+    $pays_infection = getPaysTotalInfection($number);
+    $infection = [];
+
+    foreach($pays_infection as $key){
+        $infection[] = intval($key['Infection']);
+    }
+
+    $infection_json = json_encode($infection);
+
+    return $infection_json;
+}
+
+function getTotalInfectionPays(int $number){
+    $pays_infection = getPaysTotalInfection($number);
+    $pays = [];
+
+    foreach($pays_infection as $key){
         $pays[] = $key['Pays'];
     }
 
@@ -192,9 +263,132 @@ function getChosenData(
     // TODO: Trier (par exemple par plus haut décès)
 }
 
-function sortData(array $data, string $sort){
+function sortCustomData(array $pays_data,string $sort,string $order){
 
-$sorted_data = sort($data);
+    if(is_int($pays_data[0][$sort]) OR is_float($pays_data[0][$sort])){echo'ola';
+        if($order == 'asc'){
+            usort($pays_data, function($a, $b) use ($sort){
+                return $a[$sort] - $b[$sort];
+            });
+        }elseif($order == 'desc'){
+            usort($pays_data, function($b, $a) use ($sort){
+                return $a[$sort] - $b[$sort];
+            });
+        }
+    }
+
+    if($sort == 'Date'){
+        if($order == 'asc'){
+            usort($pays_data, function($a, $b) use ($sort){
+                return strtotime($a[$sort]) - strtotime($b[$sort]);
+            });
+        }elseif($order == 'desc'){
+            usort($pays_data, function($b, $a) use ($sort){
+                return strtotime($a[$sort]) - strtotime($b[$sort]);
+            });
+        }
+    }
+
+    if($sort == 'Date'){
+        if($order == 'asc'){
+            usort($pays_data, function($a, $b) use ($sort){
+                return strtotime($a[$sort]) - strtotime($b[$sort]);
+            });
+        }elseif($order == 'desc'){
+            usort($pays_data, function($b, $a) use ($sort){
+                return strtotime($a[$sort]) - strtotime($b[$sort]);
+            });
+        }
+    }
+
+    if($sort == 'Pays'){
+        if($order == 'asc'){
+            usort($pays_data, function($a, $b) {
+                return strcoll($a['Pays'], $b['Pays']);
+            });
+        }elseif($order == 'desc'){
+            usort($pays_data, function($b, $a) {
+                return strcoll($a['Pays'], $b['Pays']);
+            });
+        }
+    }
+
+    return $pays_data;
+
+}
+
+function sortData(array $pays_data){
+
+    $_SESSION['sort'] = [];
+
+    $_SESSION['sort']['name'] = isset($_SESSION['sort']['name']) ? $_SESSION['sort']['name'] : 'Date';
+    $_SESSION['sort']['order'] = isset($_SESSION['sort']['order']) ? $_SESSION['sort']['order'] : 'desc';
+
+    if(isset($_POST['sort'])){
+        $sort_order = explode(",",$_POST['sort']);
+        $_SESSION['sort']['name'] = $sort_order[0];
+        $_SESSION['sort']['order'] = $sort_order[1];
+    }
+
+    $sort = trim($_SESSION['sort']['name']);
+    $order = trim($_SESSION['sort']['order']);
+
+    if(isset($pays_data[0])){
+
+        if(is_int($pays_data[0][$sort]) OR is_float($pays_data[0][$sort])){
+            if($order == 'asc'){
+                usort($pays_data, function($a, $b) use ($sort){
+                    return $a[$sort] - $b[$sort];
+                });
+            }elseif($order == 'desc'){
+                usort($pays_data, function($b, $a) use ($sort){
+                    return $a[$sort] - $b[$sort];
+                });
+            }
+        }
+
+        if($sort == 'Date'){
+            if($order == 'asc'){
+                usort($pays_data, function($a, $b) use ($sort){
+                    return strtotime($a[$sort]) - strtotime($b[$sort]);
+                });
+            }elseif($order == 'desc'){
+                usort($pays_data, function($b, $a) use ($sort){
+                    return strtotime($a[$sort]) - strtotime($b[$sort]);
+                });
+            }
+        }
+
+        if($sort == 'Date'){
+            if($order == 'asc'){
+                usort($pays_data, function($a, $b) use ($sort){
+                    return strtotime($a[$sort]) - strtotime($b[$sort]);
+                });
+            }elseif($order == 'desc'){
+                usort($pays_data, function($b, $a) use ($sort){
+                    return strtotime($a[$sort]) - strtotime($b[$sort]);
+                });
+            }
+        }
+
+        if($sort == 'Pays'){
+            if($order == 'asc'){
+                usort($pays_data, function($a, $b) {
+                    return strcoll($a['Pays'], $b['Pays']);
+                });
+            }elseif($order == 'desc'){
+                usort($pays_data, function($b, $a) {
+                    return strcoll($a['Pays'], $b['Pays']);
+                });
+            }
+        }
+
+    }else{
+        $pays_data = null;
+    }
+
+
+    return $pays_data;
 
 }
 
@@ -267,23 +461,32 @@ function removeFilterFromUrl($get_to_remove, $filter_to_remove){
     return $new_url;
 }
 
-function getDateInterval($startDate, $endDate){
 
-    // Create DateTime objects for the start and end dates
+function getDateInterval($data,$dateSyntaxe){
+
+    $date = [];
+
+    foreach($data as $key){
+        if(!in_array($key[$dateSyntaxe], $date)){
+            $date[] = $key[$dateSyntaxe];
+        }
+    }
+
+    sort($date);
+    $startDate = $date[0];
+    $endDate = $date[count($date)-1];
+
     $startDateTime = new DateTime($startDate);
     $endDateTime = new DateTime($endDate);
 
-    // Calculate the number of days between the start and end dates
     $interval = $startDateTime->diff($endDateTime);
     $numberOfDays = $interval->days;
 
-    // Loop through each day in the date range
     $currentDateTime = $startDateTime;
 
     $date_interval_array = [];
 
     for ($i = 0; $i <= $numberOfDays; $i++) {
-        // Format the current date as a string and do something with it
         $currentDate = $currentDateTime->format('Y-m-d');
         $date_interval_array[] = $currentDate;
         $currentDateTime->modify('+1 day');

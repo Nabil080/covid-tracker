@@ -1,4 +1,4 @@
-<?php include('include/header.php'); 
+<?php include('include/header.php');
 
 $data = getChosenData('pays',true,true,false,true,false);
 // var_dump($data);
@@ -11,6 +11,7 @@ $multi_data = multipleFilterData($data,"< '2023-03-06'","== 'Albanie'","","","")
 
 <body class="bg-blue-100">
     <center class="text-3xl">Bienvenue sur mon covid tracker !</center>
+    <center class="text-xl"><a href="https://www.data.gouv.fr/fr/datasets/coronavirus-covid19-evolution-par-pays-et-dans-le-monde-maj-quotidienne/#/resources">source (30derniers jours)</a></center>
 
     <div class="ml-4 mt-4 text-xl text-blue-800">Que voulez vous faire ?</div>
 
