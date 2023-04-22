@@ -1,4 +1,13 @@
-<?php include('include/header.php'); ?>
+<?php include('include/header.php'); 
+
+$data = getChosenData('pays',true,true,false,true,false);
+// var_dump($data);
+$filtered_data = oneFilterData($data,'France, Albanie');
+// var_dump($filtered_data);
+$multi_data = multipleFilterData($data,"< '2023-03-06'","== 'Albanie'","","","");
+// var_dump($multi_data);
+
+?>
 
 <body class="bg-blue-100">
     <center class="text-3xl">Bienvenue sur mon covid tracker !</center>
