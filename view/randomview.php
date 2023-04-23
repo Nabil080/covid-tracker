@@ -1,8 +1,8 @@
-<?php include('include/header.php'); ?>
+<?php include ('include/header.php'); ?>
 
 <body class="bg-blue-100">
 
-    <?php include('include/nav.php'); ?>
+    <?php include ('include/nav.php'); ?>
 
     <button class="bg-blue-300 rounded-lg px-2 py-1 absolute right-8 top-80"><a href="stats_cool.php">Stats cool
             -></a></button>
@@ -25,10 +25,11 @@
         $pays_data = getPaysData();
         $i = 0;
         foreach ($pays_data as $covid) {
-            if (isset($_GET['pays']) && $i <= 10000) {;
+            if (isset($_GET['pays']) && $i <= 10000) {
+                ;
                 if (in_array($_GET['pays'], $covid)) {
                     $i++
-        ?>
+                    ?>
                     <tr class="text-center">
                         <td><?= $covid['Date'] ?></td>
                         <td><?= $covid['Pays'] ?></td>
@@ -48,9 +49,9 @@
                     <td><?= $covid['Deces'] ?></td>
                     <td><?= $covid['TauxDeces'] ?></td>
                 </tr>
-        <?php }
+        <?php
+            }
         }
-
 
         ?>
 
@@ -132,7 +133,7 @@
         </script>
 
     <?php } ?>
-    <?php include('include/backtoindex.php'); ?>
+    <?php include ('include/backtoindex.php'); ?>
 </body>
 
 </html>

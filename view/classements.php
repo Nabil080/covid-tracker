@@ -1,4 +1,5 @@
-<?php include('include/header.php');
+<?php
+include ('include/header.php');
 $pays_data = getPaysData();
 $pays_death = getPaysTotalDeces(20);
 $graphX = getTotalDeces(20);
@@ -17,9 +18,11 @@ $infectionY = getTotalInfectionPays(20);
         <?php
         $i = 1;
         foreach ($pays_death as $key) {
-            if($i <= 20){ ?>
-                <div class="flex mt-4 ml-4"><span class="text-red-600"> Top <?= $i ?> </span> - <?= $key['Pays'] ?> : <?=  number_format($key['Deces'], 0, ',', '.')?> </div>
-            <?php $i++;
+            if ($i <= 20) {
+                ?>
+                <div class="flex mt-4 ml-4"><span class="text-red-600"> Top <?= $i ?> </span> - <?= $key['Pays'] ?> : <?= number_format($key['Deces'], 0, ',', '.') ?> </div>
+            <?php
+                $i++;
             }
         }
         ?>
@@ -44,9 +47,11 @@ $infectionY = getTotalInfectionPays(20);
         <?php
         $i = 1;
         foreach ($pays_infection as $key) {
-            if($i <= 20){ ?>
-                <div class="flex mt-4 ml-4"><span class="text-red-600"> Top <?= $i ?> </span> - <?= $key['Pays'] ?> : <?=  number_format($key['Infection'], 0, ',', '.')?> </div>
-            <?php $i++;
+            if ($i <= 20) {
+                ?>
+                <div class="flex mt-4 ml-4"><span class="text-red-600"> Top <?= $i ?> </span> - <?= $key['Pays'] ?> : <?= number_format($key['Infection'], 0, ',', '.') ?> </div>
+            <?php
+                $i++;
             }
         }
         ?>
@@ -67,29 +72,29 @@ $infectionY = getTotalInfectionPays(20);
 
     <?php
     $i = 0;
-    foreach($pays_death as $key){
-        if($i < 10){
-        $top_death[] = intval($key['Deces']);
-        $top_pays[] = $key['Pays'];
-        $i++;
-    }
+    foreach ($pays_death as $key) {
+        if ($i < 10) {
+            $top_death[] = intval($key['Deces']);
+            $top_pays[] = $key['Pays'];
+            $i++;
+        }
     }
     $top_graphX = json_encode($top_death);
     $top_graphY = json_encode($top_pays);
 
     $i = 0;
-    foreach($pays_infection as $key){
-        if($i < 10){
-        $pie_infection[] = intval($key['Infection']);
-        $pie_pays[] = $key['Pays'];
-        $i++;
-    }
+    foreach ($pays_infection as $key) {
+        if ($i < 10) {
+            $pie_infection[] = intval($key['Infection']);
+            $pie_pays[] = $key['Pays'];
+            $i++;
+        }
     }
     $pie_graphX = json_encode($pie_infection);
     $pie_graphY = json_encode($pie_pays);
     ?>
 
-<?php include('include/backtoindex.php');?>
+<?php include ('include/backtoindex.php'); ?>
 </body>
 
 <script>
@@ -98,7 +103,7 @@ $infectionY = getTotalInfectionPays(20);
         type: "bar",
 
         data: {
-            labels: <?=$graphY?>,
+            labels: <?= $graphY ?>,
             datasets: [{
                 label:'Décès totals par pays',
                 barPercentage: 0.5,
@@ -106,7 +111,7 @@ $infectionY = getTotalInfectionPays(20);
                 maxBarThickness: 8,
                 minBarLength: 2,
                 backgroundColor: '#852033',
-                data: <?=$graphX?>,
+                data: <?= $graphX ?>,
             }]
         }
     });
@@ -115,7 +120,7 @@ $infectionY = getTotalInfectionPays(20);
         type: "pie",
 
         data: {
-            labels: <?=$top_graphY?>,
+            labels: <?= $top_graphY ?>,
             datasets: [{
                 label:'Comparaison 10 pays principaux',
                 backgroundColor: [
@@ -131,7 +136,7 @@ $infectionY = getTotalInfectionPays(20);
                 '#f3e9eb',
                 ],
                 hoverOffset: 4,
-                data: <?=$top_graphX?>,
+                data: <?= $top_graphX ?>,
             }]
         }
     });
@@ -142,7 +147,7 @@ $infectionY = getTotalInfectionPays(20);
         type: "bar",
 
         data: {
-            labels: <?=$infectionY?>,
+            labels: <?= $infectionY ?>,
             datasets: [{
                 label:'Infections totals par pays',
                 barPercentage: 0.5,
@@ -150,7 +155,7 @@ $infectionY = getTotalInfectionPays(20);
                 maxBarThickness: 8,
                 minBarLength: 2,
                 backgroundColor: '#852033',
-                data: <?=$infectionX?>,
+                data: <?= $infectionX ?>,
             }]
         }
     });
@@ -160,7 +165,7 @@ $infectionY = getTotalInfectionPays(20);
         type: "pie",
 
         data: {
-            labels: <?=$pie_graphY?>,
+            labels: <?= $pie_graphY ?>,
             datasets: [{
                 label:'Comparaison 10 pays principaux',
                 backgroundColor: [
@@ -176,7 +181,7 @@ $infectionY = getTotalInfectionPays(20);
                 '#f3e9eb',
                 ],
                 hoverOffset: 4,
-                data: <?=$pie_graphX?>,
+                data: <?= $pie_graphX ?>,
             }]
         }
     });

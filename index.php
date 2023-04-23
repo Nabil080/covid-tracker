@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('controller/indexController.php');
+require_once ('controller/indexController.php');
 
 if (isset($_GET['action']) and $_GET['action'] != '') {
     switch ($_GET['action']) {
@@ -20,6 +20,5 @@ if (isset($_GET['action']) and $_GET['action'] != '') {
 } else {
     dashboard();
 }
-
 
 ?>
